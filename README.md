@@ -10,7 +10,7 @@
 > <br/> — [jog on GitHub]
 
 ![Tag](https://img.shields.io/github/v/tag/eibens/jog)
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/mod.ts)
+[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/jog/mod.ts)
 ![License](https://img.shields.io/github/license/eibens/jog)
 
 ![jog CI](https://github.com/eibens/jog/workflows/ci/badge.svg)
