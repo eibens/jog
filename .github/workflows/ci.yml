@@ -1,0 +1,30 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deno setup
+        uses: denoland/setup-deno@v1
+
+      - name: Deno lint
+        run: deno lint
+
+      - name: Deno format
+        run: deno fmt --check
+
+      - name: Deno test
+        run: deno test --coverage=.cov --allow-read --allow-write --allow-run=deno
+
+      - name: Deno coverage
+        run: |
+          deno coverage --unstable --lcov .cov > mod.lcov
+          sed -i "s@SF:${PWD}/@SF:@" mod.lcov
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          files: coverage.lcov
