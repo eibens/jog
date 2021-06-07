@@ -1,6 +1,6 @@
-# [jog]
+# jog
 
-> [jog] — _also known as a leisurely paced run_ — is a simplified API for
+> **jog** — _also known as a leisurely paced run_ — is a simplified API for
 > running sub-processes in TypeScript for [Deno], implemented as a thin wrapper
 > around `Deno.run`. Stream access to `stdout`, `stdin`, and `stderr`, as well
 > as resource management, is abstracted away. Instead, the data for `stdin` can
@@ -16,10 +16,10 @@
 ![jog CI](https://github.com/eibens/jog/workflows/ci/badge.svg)
 [![Code coverage](https://img.shields.io/codecov/c/github/eibens/jog)](https://codecov.io/gh/eibens/jog)
 
-# [Comparison]
+# Comparison
 
 The following table summarizes the differences between the native [Deno] API and
-[jog]:
+**jog**:
 
 | `Deno.run`                     | [run.ts]                |
 | ------------------------------ | ----------------------- |
@@ -28,15 +28,11 @@ The following table summarizes the differences between the native [Deno] API and
 | `stdout` / `output` / `status` | `Promise<Uint8Array>`   |
 | `stderr` / `stderrOutput`      | `throw new Error`       |
 
-# [mod.ts module]
+# [mod.ts] module
 
-The [mod.ts] module exports all other modules:
+The [mod.ts] module exports all other modules.
 
-- [run.ts module]
-- [out.ts module]
-- [map.ts module]
-
-# [run.ts module]
+# [run.ts] module
 
 The [run.ts] module defines the `run` function which starts a sub-process and
 returns its result asynchronously. The required `cmd` and optional `cwd` and
@@ -91,7 +87,7 @@ try {
 }
 ```
 
-# [out.ts module]
+# [out.ts] module
 
 The [out.ts] module defines the `out` function, which extends the `run` API with
 an asynchronous mapping function that is applied to the `stdout` buffer. For
@@ -113,7 +109,7 @@ const length: number = await out(command);
 console.log(length);
 ```
 
-# [map.ts module]
+# [map.ts] module
 
 The [map.ts] module defines common mappings that can be used with the `out`
 function, such as `getLines`, `getLinesNonEmpty`, `getFirst`, and `getSuccess`.
@@ -154,17 +150,10 @@ const result = await out({
 console.log(line);
 ```
 
-[jog]: #jog
 [jog on GitHub]: https://github.com/eibens/jog
 [Deno]: https://deno.land
-[Command Pattern]: https://en.wikipedia.org/wiki/Command_pattern
-[mod.ts module]: #mod.ts-module
-[run.ts module]: #run.ts-module
-[out.ts module]: #out.ts-module
-[map.ts module]: #map.ts-module
 [mod.ts]: mod.ts
 [run.ts]: run.ts
 [out.ts]: out.ts
 [map.ts]: map.ts
 [mockcli.ts]: mockcli.ts
-[comparison]: #comparison
