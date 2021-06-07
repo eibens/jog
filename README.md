@@ -9,10 +9,12 @@
 > as an error message if the process terminates unsuccessfully.
 > <br/> — [jog on GitHub]
 
-![License](https://img.shields.io/github/license/eibens/jog)
 ![Tag](https://img.shields.io/github/v/tag/eibens/jog)
-![Build status](https://img.shields.io/github/workflow/status/eibens/jog/build)
-![Code coverage](https://img.shields.io/codecov/c/github/eibens/jog)
+[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/jog.ts)
+![License](https://img.shields.io/github/license/eibens/jog)
+
+![jog CI](https://github.com/eibens/jog/workflows/ci/badge.svg)
+[![Code coverage](https://img.shields.io/codecov/c/github/eibens/jog)](https://codecov.io/gh/eibens/jog)
 
 # [Comparison]
 
