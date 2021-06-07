@@ -20,9 +20,7 @@ jobs:
         run: deno test --coverage=.cov --allow-read --allow-write --allow-run=deno
 
       - name: Deno coverage
-        run: |
-          deno coverage --unstable --lcov .cov > mod.lcov
-          sed -i "s@SF:${PWD}/@SF:@" mod.lcov
+        run: deno coverage --unstable --lcov .cov > mod.lcov
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v1
