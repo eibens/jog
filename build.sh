@@ -3,7 +3,7 @@ set -e
 
 # Lint and format.
 deno lint
-deno fmt
+deno fmt --check
 
 # Run tests and generate coverage profile.
 deno test \

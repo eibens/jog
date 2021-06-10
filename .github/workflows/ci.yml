@@ -14,15 +14,6 @@ jobs:
         shell: bash
         run: sh build.sh
 
-      - name: Commit
-        run: |
-          git add .
-          git \
-          -c user.name="ci-bot" \
-          -c user.email="<>" \
-          commit -m ":package: chore: build project" || true
-          git push
-
       - name: Upload coverage report
         uses: codecov/codecov-action@v1
         with:
