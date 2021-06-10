@@ -10,17 +10,19 @@ jobs:
       - name: Deno setup
         uses: denoland/setup-deno@v1
 
-      - name: Deno lint
-        run: deno lint
+      - name: Build
+        shell: bash
+        run: sh build.sh
 
-      - name: Deno format
-        run: deno fmt --check
-
-      - name: Deno test
-        run: deno test --coverage=.cov --allow-read --allow-write --allow-run=deno
-
-      - name: Deno coverage
-        run: deno coverage --unstable --lcov .cov > mod.lcov
+      - name: Commit
+        run: |
+          git add .
+          status=$(git status --porcelain)
+          git \
+          -c user.name="ci-bot" \
+          -c user.email="<>" \
+          commit -m ":package: chore: build project" || true
+          git push
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v1
