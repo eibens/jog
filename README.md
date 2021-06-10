@@ -1,47 +1,48 @@
-# jog
+# jog - Simplified Process Runner for Deno
 
 > **jog** — _also known as a leisurely paced run_ — is a simplified API for
 > running sub-processes in TypeScript for [Deno], implemented as a thin wrapper
-> around `Deno.run`. Stream access to `stdout`, `stdin`, and `stderr`, as well
-> as resource management, is abstracted away. Instead, the data for `stdin` can
-> be specified once as a buffer, the data from `stdout` is returned
-> asynchronously as a buffer or mapped to a custom type, and `stderr` is thrown
-> as an error message if the process terminates unsuccessfully.
-> <br/> — [jog on GitHub]
+> around `Deno.run`.
 
-![Tag](https://img.shields.io/github/v/tag/eibens/jog)
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/jog/mod.ts)
-![License](https://img.shields.io/github/license/eibens/jog)
-
-![jog CI](https://github.com/eibens/jog/workflows/ci/badge.svg)
+[![deno.land mod](https://img.shields.io/badge/deno.land-jog-lightgrey.svg?logo=deno)](https://deno.land/x/jog)
+[![deno.land doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/jog/mod.ts)
+![tag](https://img.shields.io/github/v/tag/eibens/jog)
+![MIT license](https://img.shields.io/github/license/eibens/jog)
+![CI](https://github.com/eibens/jog/workflows/ci/badge.svg)
 [![Code coverage](https://img.shields.io/codecov/c/github/eibens/jog)](https://codecov.io/gh/eibens/jog)
 
-# Comparison
+# Motivation
 
-The following table summarizes the differences between the native [Deno] API and
-**jog**:
+Using the native [Deno] function `Deno.run` can be tedious, as we must correctly
+configure the IO streams and remember to cleanup resources. In **jog** access to
+`stdout`, `stdin`, and `stderr`, as well as resource management is abstracted
+away. Instead, the data for `stdin` can be specified once as a buffer, the data
+from `stdout` is returned asynchronously as a buffer or mapped to a custom type,
+and `stderr` is thrown as an error message if the process terminates
+unsuccessfully. The following table summarizes the differences between the
+native [Deno] API and **jog**:
 
 | `Deno.run`                     | [run.ts]                |
 | ------------------------------ | ----------------------- |
 | `cmd` / `cwd` / `env`          | _same_                  |
 | `stdin`                        | `Uint8Array` / `string` |
 | `stdout` / `output` / `status` | `Promise<Uint8Array>`   |
-| `stderr` / `stderrOutput`      | `throw new Error`       |
+| `stderr` / `stderrOutput`      | `try-catch`             |
 
-# [mod.ts] module
+# [mod.ts]
 
 The [mod.ts] module exports all other modules.
 
-# [run.ts] module
+# [run.ts]
 
-The [run.ts] module defines the `run` function which starts a sub-process and
-returns its result asynchronously. The required `cmd` and optional `cwd` and
-`env` options work exactly like their `Deno.run` counterparts. The examples
-assume that the [mockcli.ts] module is installed as `mockcli` on the command
-line. This example demonstrates how `run` can be used to get data from `stdout`:
+The `run` function starts a sub-process and returns its result asynchronously.
+The required `cmd` and optional `cwd` and `env` options work exactly like their
+`Deno.run` counterparts. The examples assume that the [mockcli.ts] module is
+installed as `mockcli` on the command line. This example demonstrates how `run`
+can be used to get data from `stdout`:
 
 ```ts
-import { Run, run } from "./run.ts";
+import { Run, run } from "https://deno.land/x/jog/run.ts";
 
 // Define a process.
 const command: Run = {
@@ -51,7 +52,7 @@ const command: Run = {
 // Run the process.
 const buffer: Uint8Array = await run(command);
 
-// print: "42"
+// print: "42\n"
 Deno.stdout.write(buffer);
 ```
 
@@ -59,7 +60,7 @@ Data for `stdin` can be specified with the `input` option, either as a `string`
 or as a `Uint8Array`:
 
 ```ts
-import { run } from "./run.ts";
+import { run } from "https://deno.land/x/jog/run.ts";
 
 const buffer = await run({
   cmd: ["mockcli", "echo"],
@@ -74,7 +75,7 @@ If the process exits with an error, an `Error` is thrown and the contents of
 `stderr` are used as the error message:
 
 ```ts
-import { run } from "./run.ts";
+import { run } from "https://deno.land/x/jog/run.ts";
 
 try {
   await run({
@@ -87,14 +88,14 @@ try {
 }
 ```
 
-# [out.ts] module
+# [out.ts]
 
-The [out.ts] module defines the `out` function, which extends the `run` API with
-an asynchronous mapping function that is applied to the `stdout` buffer. For
-example, instead of the buffer itself, one could return its length:
+The `out` function extends the `run` API with an asynchronous mapping function
+that is applied to the `stdout` buffer. For example, instead of the buffer
+itself, one could return its length:
 
 ```ts
-import { Out, out } from "./out.ts";
+import { Out, out } from "https://deno.land/x/jog/out.ts";
 
 // Define a process with output mapping.
 const command: Out<number> = {
@@ -109,18 +110,19 @@ const length: number = await out(command);
 console.log(length);
 ```
 
-# [map.ts] module
+# [map.ts]
 
-The [map.ts] module defines common mappings that can be used with the `out`
-function, such as `getLines`, `getLinesNonEmpty`, `getFirst`, and `getSuccess`.
-For example, `getSuccess` can be used to check whether a process succeeds:
+The functions `getLines`, `getLinesNonEmpty`, `getFirst`, and `getSuccess` are
+common mappings that can be used with the `out` function. For example,
+`getSuccess` can be used to check whether a process succeeds:
 
 ```ts
-import { out } from "./out.ts";
-import { getSuccess } from "./map.ts";
+import { out } from "https://deno.land/x/jog/out.ts";
+import { getSuccess } from "https://deno.land/x/jog/map.ts";
 
 const worked = await out({
   cmd: ["mockcli", "fail"],
+  input: "oh no!",
   map: getSuccess,
 });
 
@@ -134,8 +136,8 @@ functions. In this example, `out` returns the first line of `stdout` in
 uppercase letters:
 
 ```ts
-import { out } from "./out.ts";
-import { map, pipe } from "./map.ts";
+import { out } from "https://deno.land/x/jog/out.ts";
+import { getFirst, getLines, map, pipe } from "https://deno.land/x/jog/map.ts";
 
 const result = await out({
   cmd: ["mockcli", "echo"],
@@ -146,11 +148,15 @@ const result = await out({
   ),
 });
 
-// print: "result"
-console.log(line);
+// print: "FIRST"
+console.log(result);
 ```
 
-[jog on GitHub]: https://github.com/eibens/jog
+# That's it!
+
+For more information consider the source code repository [eibens/jog on GitHub].
+
+[eibens/jog on GitHub]: https://github.com/eibens/jog
 [Deno]: https://deno.land
 [mod.ts]: mod.ts
 [run.ts]: run.ts
