@@ -17,7 +17,6 @@ jobs:
       - name: Commit
         run: |
           git add .
-          status=$(git status --porcelain)
           git \
           -c user.name="ci-bot" \
           -c user.email="<>" \
