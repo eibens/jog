@@ -4,17 +4,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Deno setup
-        uses: denoland/setup-deno@v1
-
-      - name: Build
-        shell: bash
-        run: sh build.sh
-
-      - name: Upload coverage report
-        uses: codecov/codecov-action@v1
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+      - uses: eibens/edcb@v0.3.3
         with:
-          files: mod.lcov
+          version: v0.3.3
