@@ -1,33 +1,31 @@
 # jog - Simplified Process Runner for Deno
 
-> **jog** — _also known as a leisurely paced run_ — is a simplified API for
+> [jog] — _also known as a leisurely paced run_ — is a simplified API for
 > running sub-processes in TypeScript for [Deno], implemented as a thin wrapper
 > around `Deno.run`.
 
-[![deno.land mod](https://img.shields.io/badge/deno.land-jog-lightgrey.svg?logo=deno)](https://deno.land/x/jog)
-[![deno.land doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/jog/mod.ts)
-![tag](https://img.shields.io/github/v/tag/eibens/jog)
-![MIT license](https://img.shields.io/github/license/eibens/jog)
-![CI](https://github.com/eibens/jog/workflows/ci/badge.svg)
-[![Code coverage](https://img.shields.io/codecov/c/github/eibens/jog)](https://codecov.io/gh/eibens/jog)
+[![License][license-shield]](LICENSE) [![Deno doc][deno-doc-shield]][deno-doc]
+[![Deno module][deno-land-shield]][deno-land]
+[![Github tag][github-shield]][github] [![Build][build-shield]][build]
+[![Code coverage][coverage-shield]][coverage]
 
 # Motivation
 
 Using the native [Deno] function `Deno.run` can be tedious, as we must correctly
-configure the IO streams and remember to cleanup resources. In **jog** access to
+configure the IO streams and remember to cleanup resources. In [jog] access to
 `stdout`, `stdin`, and `stderr`, as well as resource management is abstracted
 away. Instead, the data for `stdin` can be specified once as a buffer, the data
 from `stdout` is returned asynchronously as a buffer or mapped to a custom type,
 and `stderr` is thrown as an error message if the process terminates
 unsuccessfully. The following table summarizes the differences between the
-native [Deno] API and **jog**:
+native [Deno] API and [jog]:
 
-| `Deno.run`                     | [run.ts]                |
+| `Deno.run`                     | `jog.run`               |
 | ------------------------------ | ----------------------- |
 | `cmd` / `cwd` / `env`          | _same_                  |
 | `stdin`                        | `Uint8Array` / `string` |
 | `stdout` / `output` / `status` | `Promise<Uint8Array>`   |
-| `stderr` / `stderrOutput`      | `try-catch`             |
+| `stderr` / `stderrOutput`      | `try`-`catch`           |
 
 # [mod.ts]
 
@@ -154,12 +152,26 @@ console.log(result);
 
 # That's it!
 
-For more information consider the source code repository [eibens/jog on GitHub].
+Now, [jog home][github].
 
-[eibens/jog on GitHub]: https://github.com/eibens/jog
+[jog]: #
 [Deno]: https://deno.land
 [mod.ts]: mod.ts
 [run.ts]: run.ts
 [out.ts]: out.ts
 [map.ts]: map.ts
 [mockcli.ts]: mockcli.ts
+
+<!-- badges -->
+
+[github]: https://github.com/eibens/jog
+[github-shield]: https://img.shields.io/github/v/tag/eibens/jog?label&logo=github
+[coverage-shield]: https://img.shields.io/codecov/c/github/eibens/jog?logo=codecov&label
+[license-shield]: https://img.shields.io/github/license/eibens/jog?color=informational
+[coverage]: https://codecov.io/gh/eibens/jog
+[build]: https://github.com/eibens/jog/actions/workflows/ci.yml
+[build-shield]: https://img.shields.io/github/workflow/status/eibens/jog/ci?logo=github&label
+[deno-doc]: https://doc.deno.land/https/deno.land/x/jog/mod.ts
+[deno-doc-shield]: https://img.shields.io/badge/doc-informational?logo=deno
+[deno-land]: https://deno.land/x/jog
+[deno-land-shield]: https://img.shields.io/badge/x/jog-informational?logo=deno&label
