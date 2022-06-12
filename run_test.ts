@@ -5,6 +5,7 @@ import {
 import { join } from "https://deno.land/std@0.91.0/path/mod.ts";
 import { getText } from "./map.ts";
 import { run } from "./run.ts";
+import { copy } from "https://deno.land/std@0.143.0/streams/conversion.ts";
 
 const mockcliFile = "mockcli.ts";
 const denoRun = ["deno", "run", "--allow-read"];
@@ -67,7 +68,7 @@ Deno.test("run uses the specified CWD", async () => {
   const dst = await Deno.create(tmpMockcli);
   const src = await Deno.open(mockcliFile);
   try {
-    await Deno.copy(src, dst);
+    await copy(src, dst);
     assertEquals(
       await getText(run({
         cmd: [...denoRun, tmpMockcli, "cwd"],
