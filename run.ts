@@ -45,7 +45,8 @@ export async function run(opts: Run): Promise<Uint8Array> {
     if (typeof input === "string") {
       input = new TextEncoder().encode(input);
     }
-    process.stdin.write(input);
+    await process.stdin.write(input);
+    process.stdin.close();
 
     // Read streams to close them.
     // For info see: https://github.com/denoland/deno/issues/4568#issuecomment-772463496
@@ -64,7 +65,6 @@ export async function run(opts: Run): Promise<Uint8Array> {
     }
   } finally {
     // Avoid leaking resources.
-    process.stdin.close();
     process.close();
   }
 }
