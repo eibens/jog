@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "test": "deno test --allow-run=deno --allow-write=/tmp --allow-read=/tmp,mockcli.ts",
+    "verify": "deno lint && deno task test",
+    "fix": "deno fmt && deno task verify",
+    "ci": "deno fmt --check && deno task verify"
+  }
+}

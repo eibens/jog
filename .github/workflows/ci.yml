@@ -6,6 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: denoland/setup-deno@v1
-      - uses: eibens/edcb@v0.3.3
-        with:
-          version: v0.3.3
+      - run: deno task ci
