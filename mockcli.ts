@@ -1,3 +1,5 @@
+import { copy } from "https://deno.land/std@0.143.0/streams/conversion.ts";
+
 const help = `
 usage: deno run [--allow-read] mockcli.ts <command>
 
@@ -30,25 +32,17 @@ export async function main(opts: {
     await opts.stdout.write(answer);
   }
 
-  async function writeStdinTo(writer: Deno.Writer) {
-    // For some reason using `await Deno.copy(Deno.stdin, Deno.stdout)`
-    // makes the process hang forever. Should be investigated further.
-    const buffer = new Uint8Array(1024);
-    const n = <number> await opts.stdin.read(buffer);
-    await writer.write(buffer.subarray(0, n));
-  }
-
   switch (Deno.args[0]) {
     case "answer": {
       await writeTextToStdout("42\n");
       return opts.exit(0);
     }
     case "echo": {
-      await writeStdinTo(opts.stdout);
+      await copy(Deno.stdin, Deno.stdout);
       return opts.exit(0);
     }
     case "fail": {
-      await writeStdinTo(opts.stderr);
+      await copy(Deno.stdin, Deno.stderr);
       return opts.exit(-1);
     }
     case "cwd": {
